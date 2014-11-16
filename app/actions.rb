@@ -14,12 +14,22 @@ end
 
 post '/messages' do
   @message = Message.new(
-    title: params[:title],
+    title:   params[:title],
     content: params[:content],
     author:  params[:author]
   )
-  @message.save
-  redirect '/messages/new'
+  if @message.title.nil? || @message.author.nil? || @message.content.nil?
+    erb :'messages/new'
+  else
+    @message.save
+    redirect '/messages'
+  end
+  # if @message
+  #   @message.save
+  #   redirect '/messages'
+  # else
+  #   erb :'messages/new'
+  # end
 end
 
 get '/messages/:id' do
